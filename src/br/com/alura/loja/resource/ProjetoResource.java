@@ -19,7 +19,7 @@ public class ProjetoResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String busca(@QueryParam("id") long id) throws JsonProcessingException {
 
-		Projeto projeto = new ProjetoDAO().busca(1l);
+		Projeto projeto = new ProjetoDAO().busca(id);
 		return projeto.json();
 	}
 

@@ -15,6 +15,10 @@ public class Carrinho {
 	private String cidade;
 	private long id;
 
+	public Carrinho() {
+		super();
+	}
+
 	public Carrinho adiciona(Produto produto) {
 		produtos.add(produto);
 		return this;
@@ -26,9 +30,46 @@ public class Carrinho {
 		return this;
 	}
 
-	public Carrinho setId(long id) {
-		this.id = id;
-		return this;
+	public void remove(long id) {
+		for (int i = 0; i < produtos.size(); i++) {
+			Produto produto = produtos.get(i);
+			if (produto.getId() == id) {
+				produtos.remove(i);
+				break;
+			}
+		}
+	}
+
+	public void troca(Produto produto) {
+		remove(produto.getId());
+		adiciona(produto);
+	}
+
+	public void trocaQuantidade(Produto produto) {
+		for (int i = 0; i < produtos.size(); i++) {
+			Produto p = produtos.get(i);
+			if (p.getId() == produto.getId()) {
+				p.setQuantidade(produto.getQuantidade());
+				return;
+			}
+		}
+	}
+
+	public String toXML() {
+		return new XStream().toXML(this);
+	}
+
+	public String json() throws JsonProcessingException {
+		return new ObjectMapper().writeValueAsString(this);
+
+	}
+
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 
 	public String getRua() {
@@ -38,49 +79,26 @@ public class Carrinho {
 	public void setRua(String rua) {
 		this.rua = rua;
 	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
-	
+
 	public long getId() {
 		return id;
 	}
-	
-	public void remove(long id) {
-		for (Iterator iterator = produtos.iterator(); iterator.hasNext();) {
-			Produto produto = (Produto) iterator.next();
-			if(produto.getId() == id) {
-				iterator.remove();
-			}
-		}
-	}
-	
-	public void troca(Produto produto) {
-		remove(produto.getId());
-		adiciona(produto);
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public void trocaQuantidade(Produto produto) {
-		for (Iterator iterator = produtos.iterator(); iterator.hasNext();) {
-			Produto p = (Produto) iterator.next();
-			if(p.getId() == produto.getId()) {
-				p.setQuantidade(produto.getQuantidade());
-				return;
-			}
-		}
-	}
-	
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public String toXML() {		
-		return new XStream().toXML(this);
-	}
-
-	public String json() throws JsonProcessingException {
-		return new ObjectMapper().writeValueAsString(this);
-		
+	@Override
+	public String toString() {
+		return "Carrinho [produtos=" + produtos + ", rua=" + rua + ", cidade=" + cidade + ", id=" + id + "]";
 	}
 
 }
